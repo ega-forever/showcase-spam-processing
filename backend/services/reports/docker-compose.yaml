@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+
+  db:
+    image: postgres:12.0
+    environment:
+      POSTGRES_PASSWORD: 123
+      POSTGRES_USER: demo
+      POSTGRES_DB: db
+    ports:
+      - 5432:5432
+    networks:
+      - showcase
+
+  pubsub:
+    image: egorzuev/pubsub:290.0.1
+    environment:
+      HOST_PORT: 8085
+      PUBSUB_PROJECT_ID: showcase
+    ports:
+      - 8085:8085
+    networks:
+      - showcase
+
+
+networks:
+  showcase:

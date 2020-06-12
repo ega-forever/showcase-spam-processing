@@ -1,0 +1,56 @@
+version: "3"
+
+services:
+
+  db:
+    image: postgres:12.0
+    environment:
+      POSTGRES_PASSWORD: 123
+      POSTGRES_USER: demo
+      POSTGRES_DB: db
+    ports:
+      - 5432:5432
+    networks:
+      - showcase
+
+  pubsub:
+    image: egorzuev/pubsub:290.0.1
+    environment:
+      HOST_PORT: 8085
+      PUBSUB_PROJECT_ID: showcase
+    ports:
+      - 8085:8085
+    networks:
+      - showcase
+
+  service_reports:
+    build:
+      context: ../../backend/services/reports
+      dockerfile: Dockerfile
+    environment:
+      REST_PORT: 3001
+      DB_TYPE: postgres
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: demo
+      DB_PASSWORD: 123
+      DB_DB: db
+      DB_LOGGING: 0
+      LOG_LEVEL: 30
+      CREATE_MISSED_TOPICS: 1
+      GOOGLE_PUBSUB_PROJECT_ID: showcase
+      GOOGLE_PUBSUB_CREDENTIALS: ./creds/creds.json
+      PUBSUB_EMULATOR_HOST: pubsub:8085
+    entrypoint: ""
+    command: ["tools/wait.sh", "db:5432", "--", "tools/wait.sh", "pubsub:8085", "--", "node", "build/src/index.js"]
+    volumes:
+      - ../../backend/services/reports/tests/shared/creds:/app/creds
+      - ../../compose/tools:/app/tools
+    ports:
+      - 3001:3001
+    networks:
+      - showcase
+
+
+networks:
+  showcase:

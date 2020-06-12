@@ -1,0 +1,103 @@
+<div class="container">
+  <div class="py-5 text-center">
+    <h2>Reports</h2>
+    <p class="lead">Resolve or block content below</p>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 order-md-2 mb-4">
+      <h4 class="d-flex justify-content-between align-items-center mb-3">
+        <span class="text-muted">Filters</span>
+      </h4>
+      <ul class="list-group mb-3">
+        <li class="list-group-item d-flex justify-content-between lh-condensed"
+            [ngClass]="{'bg-light': (selectedReportType == 0)}" (click)="selectReportsByType(0)">
+          <div>
+            <h6 class="my-0">Open</h6>
+            <small class="text-muted">pending issues</small>
+          </div>
+          <span class="text-muted">{{reports[0].count}}</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between lh-condensed"
+            [ngClass]="{'bg-light': (selectedReportType == 1)}" (click)="selectReportsByType(1)">
+          <div>
+            <h6 class="my-0">Blocked</h6>
+            <small class="text-muted">Blocked content</small>
+          </div>
+          <span class="text-muted">{{reports[1].count}}</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between lh-condensed"
+            [ngClass]="{'bg-light': (selectedReportType == 2)}" (click)="selectReportsByType(2)">
+          <div>
+            <h6 class="my-0">Resolved</h6>
+            <small class="text-muted">Accepted content</small>
+          </div>
+          <span class="text-muted">{{reports[2].count}}</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="col-md-8 order-md-1">
+      <h4 class="mb-3">Reports</h4>
+      <table class="table table-striped table-dark">
+        <thead>
+        <tr>
+          <th scope="col">id</th>
+          <th scope="col">Type</th>
+          <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of reports[selectedReportType].items; index as i">
+          <th scope="row">{{item.payload.externalReportId}}</th>
+          <td>{{getReportNameByType(item.payload.reportType)}}</td>
+          <td>
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-secondary" (click)="viewContent(i)" data-toggle="modal" data-target="#viewReportModel">View</button>
+              <button type="button" [disabled]="selectedReportType === 1" class="btn btn-secondary" (click)="changeReportState(item.id, 1)">Block</button>
+              <button type="button" [disabled]="selectedReportType === 2" class="btn btn-secondary" (click)="changeReportState(item.id, 2)">Resolve</button>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <nav>
+        <ul class="pagination justify-content-center">
+          <li *ngFor="let page of pagesAvailable" class="page-item"
+              [ngClass]="{'active': currentItemsOffset / limitItemsPerPage + 1 === page}">
+            <a class="page-link" href="#" (click)="loadItems(selectedReportType, (page - 1) * limitItemsPerPage)">{{page}}</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <div class="modal fade" tabindex="-1" role="dialog" id="viewReportModel">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Report info</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>id: <span>{{reports[selectedReportType].items[currentViewItemIndex]?.payload.externalReportId}}</span></p>
+          <p>message: <span>{{reports[selectedReportType].items[currentViewItemIndex]?.payload.message}}</span></p>
+          <p>type: <span>{{getReportNameByType(reports[selectedReportType].items[currentViewItemIndex]?.payload.reportType)}}</span></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary">Details</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="my-5 pt-5 text-muted text-center text-small">
+    <p class="mb-1">&copy; 2020 Showcase</p>
+    <ul class="list-inline">
+      <li class="list-inline-item"><a href="https://github.com/ega-forever/showcase-spam-processing">Repository</a></li>
+    </ul>
+  </footer>
+</div>
