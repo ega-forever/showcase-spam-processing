@@ -1,0 +1,34 @@
+sudo: required
+dist: bionic
+os: linux
+group: stable
+language: node_js
+node_js: 12.1.0
+
+services: docker
+
+env:
+  global:
+    - DB_USER=demo
+    - DB_PASSWORD=123
+    - DB_DB=db
+    - CREATE_MISSED_TOPICS=1
+    - PUBSUB_EMULATOR_HOST=localhost:8085
+
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install python2.7 git -y
+  - npm install -g node-gyp
+
+install:
+  - cd $TRAVIS_BUILD_DIR/backend/services/reports && npm install
+
+script:
+  - cd $TRAVIS_BUILD_DIR/backend/services/reports && npm test
+
+notifications:
+  email: false
+
+cache:
+  directories:
+    - node_modules
