@@ -11,6 +11,10 @@ The showcase demo for mckinsey [task](https://github.com/morkro/coding-challenge
 
 You can start the frontend and backend (alongside with all necessary services) with single command: ```docker-compose run```
 
-### Architecture
+## Architecture
 
 ![Architecture](readme_data/arch.png)
+
+## Video presentation
+
+Please check out my [video presentation](https://youtu.be/Vfxf4BDXdro) with explanation (in Rus.)
