@@ -1,6 +1,6 @@
 # frontend.services.reports
 
-Frontend for [reports service](https://travis-ci.com/ega-forever/showcase-mckinsey/backend/services/reports). Built with angular 9.
+Frontend for [reports service](../../backend/services/reports). Built with angular 9.
 
 ## Requirements
 1) node.js 11+

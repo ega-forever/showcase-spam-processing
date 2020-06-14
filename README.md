@@ -4,8 +4,8 @@
 
 The showcase demo for mckinsey [task](https://github.com/morkro/coding-challenge). The monorepo includes sub-repos:
 
-1) [backend.services.reports](https://travis-ci.com/ega-forever/showcase-mckinsey/backend/services/reports)
-2) [frontend.services.reports](https://travis-ci.com/ega-forever/showcase-mckinsey/frontend/reports)
+1) [backend.services.reports](backend/services/reports)
+2) [frontend.services.reports](frontend/reports)
 
 ## How to run the app?
 
